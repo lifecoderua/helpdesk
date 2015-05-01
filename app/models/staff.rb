@@ -3,4 +3,6 @@ class Staff < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   # , :registerable, :validatable
   devise :database_authenticatable, :recoverable, :rememberable, :trackable
+
+  has_many :tickets
 end
