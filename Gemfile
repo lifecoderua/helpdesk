@@ -32,6 +32,16 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'mysql2'
+# activeadmin requirements is not updated yet, so the github: rel should be specified
+gem 'activeadmin', github: 'activeadmin'
+gem 'simple_form'
+gem 'bootstrap-sass', '~> 3.3.4'
+gem 'haml-rails', '~> 0.9'
+gem 'devise'
+gem 'devise-i18n'
+gem 'cancan'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
