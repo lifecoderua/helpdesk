@@ -21,6 +21,15 @@ class Ticket < ActiveRecord::Base
 
 private
 
+  # Generates slug on the ticket creation.
+  # This logic is a compromise between the code simplicity, performance and the output aesthetics.
+  #
+  # ticket[:shift] may be omitted, it is added on purpose to show better default strings to the customer, rather than
+  # ABC-00-000-01-ABC.
+  #
+  # The generator also may be implemented as a completely random string, with a DB check for duplicates and a recursion
+  # in case of a duplicate found. This adds a query or two, but should not be too heavy for the performance, with
+  # the collision probability around 1*10^10
   def generate_slug
     if self.id_changed? && !self.slug_changed?
       shifted_id = Rails.application.secrets.ticket[:shift] + self.id
