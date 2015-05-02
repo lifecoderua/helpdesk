@@ -2,7 +2,11 @@
   = f.error_notification
 
   .form-inputs
+    = f.input :subject
     = f.input :body
+    = f.input :customer_name
+    = f.input :email
+    = f.input :department
 
   .form-actions
     = f.button :submit
