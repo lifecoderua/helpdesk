@@ -14,7 +14,7 @@ RSpec.describe Ticket, type: :model do
 
     ticket = FactoryGirl.build(:ticket, id: id)
     ticket.save
-    expect(ticket.slug).to eq(slug)
+    expect(ticket.slug.slice(4, 9)).to eq(slug)
   end
 
   # The ticket limit is quite big for regular DB id column.

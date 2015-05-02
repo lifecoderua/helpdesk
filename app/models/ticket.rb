@@ -14,6 +14,7 @@ class Ticket < ActiveRecord::Base
   SLUG_FIRST_MULTIPLIER = 61011968
   # [-FF]
   SLUG_SECOND_MULTIPLIER = 256
+  BASE62_LIMIT = 238327
 
 private
 
@@ -28,9 +29,11 @@ private
       chunk3 = rest1 % SLUG_SECOND_MULTIPLIER
 
       slug = [
+          rand(BASE62_LIMIT).b(10).to_s(Radix::BASE::B62).rjust(3, '0'),
           chunk1.to_s(16).upcase().rjust(2, '0'),
           chunk2.b(10).to_s(Radix::BASE::B62).rjust(3, '0'),
-          chunk3.to_s(16).upcase().rjust(2, '0')
+          chunk3.to_s(16).upcase().rjust(2, '0'),
+          rand(BASE62_LIMIT).b(10).to_s(Radix::BASE::B62).rjust(3, '0'),
       ].join('-')
 
       self.update_attribute(:slug, slug)
