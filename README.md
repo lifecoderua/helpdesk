@@ -40,3 +40,7 @@ to one of the views
 - Ticket may be reopened from closed Status both by Staff or Customer
 - Truly random string may not guarantee it would be unique, so we would use semi-random string based on the id 
 for the Ticket's slug
+
+## Requirements
+
+- Make sure the DB uses **case sensitive collation** in order to support ticket slug lookup (`base62` is case sensitive)
