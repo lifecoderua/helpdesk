@@ -32,7 +32,7 @@ private
   # the collision probability around 1*10^10
   def generate_slug
     if self.id_changed? && !self.slug_changed?
-      shifted_id = Rails.application.secrets.ticket[:shift] + self.id
+      shifted_id = (Rails.application.secrets.ticket[:shift] + self.id) % TICKET_ID_LIMIT
 
       chunk1 = shifted_id / SLUG_FIRST_MULTIPLIER
       rest1 = shifted_id % SLUG_FIRST_MULTIPLIER
