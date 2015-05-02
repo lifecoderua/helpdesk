@@ -21,3 +21,6 @@
 
 en:
   hello: "Hello world"
+  email:
+    validation:
+      format: "The email format is not valid"
