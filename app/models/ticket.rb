@@ -10,12 +10,28 @@ class Ticket < ActiveRecord::Base
   # * You should never push it with the regular DB settings, which provides int32 for id column
   # it is HH-AAA-HH
   TICKET_ID_LIMIT = 15619063808
+  # [FF-AAA] part, 256 * 238328
+  SLUG_FIRST_MULTIPLIER = 61011968
+  # [-FF]
+  SLUG_SECOND_MULTIPLIER = 256
 
 private
 
   def generate_slug
     if self.id_changed? && !self.slug_changed?
-      slug = Rails.application.secrets.ticket[:shift]
+      shifted_id = Rails.application.secrets.ticket[:shift] + self.id
+
+      chunk1 = shifted_id / SLUG_FIRST_MULTIPLIER
+      rest1 = shifted_id % SLUG_FIRST_MULTIPLIER
+
+      chunk2 = rest1 / SLUG_SECOND_MULTIPLIER
+      chunk3 = rest1 % SLUG_SECOND_MULTIPLIER
+
+      slug = [
+          chunk1.to_s(16).upcase().rjust(2, '0'),
+          chunk2.b(10).to_s(Radix::BASE::B62).rjust(3, '0'),
+          chunk3.to_s(16).upcase().rjust(2, '0')
+      ].join('-')
 
       self.update_attribute(:slug, slug)
     end
