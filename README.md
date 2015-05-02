@@ -16,11 +16,13 @@ This application should meet the next requirements list:
  - body
  - Department
 - On ticket creation
- - ticket receives unique random string slug with mask **AAA-HH-AAA-HH-AAA** (**A** stands for random character, **H** stands for Hex digit)
+ - ticket receives unique random string slug with mask **AAA-HH-AAA-HH-AAA** (**A** stands for random character, 
+ **H** stands for Hex digit)
  - ticket receives Status `Waiting for Staff Respons`
  - customer receives an email with the link to his ticket
  - this URL should allow to track ticket status and history
-- Statuses includes: `Waiting for Staff Response`, `Waiting for Customer`, `On Hold`, `Cancelled`, `Completed`. This list may be changed by the System Admin
+- Statuses includes: `Waiting for Staff Response`, `Waiting for Customer`, `On Hold`, `Cancelled`, `Completed`. 
+This list may be changed by the System Admin
 - Staff member logs in by username & password
 - Staff interface should
  - allow to list all tickets and take control over them
@@ -30,3 +32,11 @@ This application should meet the next requirements list:
  - quick ticket load by slug
  - ticket search by words in Subject or Body
 
+## Assumptions
+
+- As Admin is able to add new statuses, and we have constant set of views, each status should be assigned 
+to one of the views
+- Basic statuses involved into the business logic, so they should be protected from deletion
+- Ticket may be reopened from closed Status both by Staff or Customer
+- Truly random string may not guarantee it would be unique, so we would use semi-random string based on the id 
+for the Ticket's slug
