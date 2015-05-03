@@ -1,5 +1,5 @@
 class TicketsController < ApplicationController
-  before_action :set_ticket, only: [:edit, :update, :destroy]
+  before_action :set_ticket, only: [:show, :update]
 
   # GET /tickets
   # GET /tickets.json
@@ -10,7 +10,7 @@ class TicketsController < ApplicationController
   # GET /tickets/1
   # GET /tickets/1.json
   def show
-    @ticket = Ticket.find_by_slug params[:slug]
+    @statuses = Status.all
   end
 
   # GET /tickets/new
@@ -40,11 +40,26 @@ class TicketsController < ApplicationController
   # PATCH/PUT /tickets/1.json
   def update
     respond_to do |format|
-      if @ticket.update(ticket_params)
+      passed_params = ticket_params
+
+      if current_staff.nil?
+        case params[:commit]
+          when 'Update and Close'
+            status = Status.find_by_role(Status.roles[:completed])
+            @ticket.status = status
+            passed_params[:ticket_updates_attributes]['0'][:status_id] = status.id
+          else
+            @ticket.set_status_by_role(Status.roles[:waiting_for_staff_response])
+        end
+      else
+        # ToDo: staff-related logic
+      end
+
+      if @ticket.update(passed_params)
         format.html { redirect_to @ticket, notice: 'Ticket was successfully updated.' }
         format.json { render :show, status: :ok, location: @ticket }
       else
-        format.html { render :edit }
+        format.html { redirect_to @ticket, notice: 'Ticket update failed' }
         format.json { render json: @ticket.errors, status: :unprocessable_entity }
       end
     end
@@ -54,11 +69,15 @@ class TicketsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_ticket
-      @ticket = Ticket.find(params[:id])
+      @ticket = Ticket.find_by_slug(params[:slug])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def ticket_params
-      params.require(:ticket).permit(:subject, :body, :customer_name, :email)
+      params.require(:ticket).permit(:subject, :body, :customer_name, :email,
+         ticket_updates_attributes: [
+             :body #, :status_id, :owner
+         ]
+      )
     end
 end

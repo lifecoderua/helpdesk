@@ -7,3 +7,36 @@
 
 #ticket-content= simple_format @ticket.body
 #customer-name= @ticket.customer_name
+
+
+#history
+  %h4 History
+  #history-list
+    - @ticket.ticket_updates.each do |update|
+      .list-item
+        .update-info
+          .when= I18n.l update.created_at, format: :long
+          .who by Customer
+        .body= simple_format update.body
+        .update-meta
+          .status= "Status changed to: #{update.status}" if update.status.present?
+          .owner ToDo: Customer
+
+
+
+
+%h4 Reply
+
+= simple_form_for(@ticket) do |f|
+  = f.error_notification
+
+  -# render single ticket_update form
+  = f.simple_fields_for :ticket_updates, @ticket.ticket_updates.build do |u|
+    .form-inputs
+      = u.input :body, label: false
+      -#= u.input :status_id, label: false, collection: @statuses
+
+
+  .form-actions
+    = f.button :submit, value: 'Update and Close'
+    = f.button :submit

@@ -3,6 +3,9 @@ class Ticket < ActiveRecord::Base
   belongs_to :status
   belongs_to :owner, class: 'Staff'
 
+  has_many :ticket_updates
+  accepts_nested_attributes_for :ticket_updates
+
   validates :subject, :body, :email, :customer_name, presence: true
   validates :email, email_format: {message: I18n.t('email.validation.format')}
 

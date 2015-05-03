@@ -6,9 +6,6 @@
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
   %body
-    %p.notice= notice
-    %p.alert= alert
-
     %nav.navbar.navbar-inverse.navbar-fixed-top
       .container
         .navbar-header
@@ -23,5 +20,11 @@
               %li
                 = link_to t('staff.login'), new_staff_session_path
 
+    .container
+      .row
+        %p.notice= notice
+        %p.alert= alert
 
-    = yield
+    .container
+      .row
+        = yield
