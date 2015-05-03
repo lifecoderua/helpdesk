@@ -7,6 +7,13 @@ class Status < ActiveRecord::Base
   # Statuses with a role different from :custom assumed as a system required and should not be allowed for deletion
   enum role: [:custom, :waiting_for_staff_response, :waiting_for_customer, :on_hold, :cancelled, :completed]
 
+  def destroy
+    # prevent system required statuses deletion
+    raise 'System statuses may not be removed' unless self.custom?
+
+    super
+  end
+
   def to_s
     title
   end
