@@ -1,5 +1,5 @@
 class TicketsController < ApplicationController
-  before_action :set_ticket, only: [:show, :edit, :update, :destroy]
+  before_action :set_ticket, only: [:edit, :update, :destroy]
 
   # GET /tickets
   # GET /tickets.json
@@ -10,6 +10,7 @@ class TicketsController < ApplicationController
   # GET /tickets/1
   # GET /tickets/1.json
   def show
+    @ticket = Ticket.find_by_slug params[:slug]
   end
 
   # GET /tickets/new

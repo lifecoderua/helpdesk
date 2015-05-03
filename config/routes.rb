@@ -3,7 +3,8 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   devise_for :staffs
 
-  resources :tickets
+  get 'ticket/:slug' => 'tickets#show', as: 'ticket'
+  resources :tickets, except: [:show]
 
   root 'tickets#new'
 
