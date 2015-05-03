@@ -3,7 +3,7 @@ class Ticket < ActiveRecord::Base
   belongs_to :owner, class: 'Staff'
 
   validates :subject, :body, :email, :customer_name, presence: true
-  validates_email_format_of :email, message: I18n.t('email.validation.format')
+  validates :email, email_format: I18n.t('email.validation.format')
 
   after_save :generate_slug
 

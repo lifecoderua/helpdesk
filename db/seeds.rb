@@ -17,3 +17,9 @@ statuses = [
 statuses.each do |status|
   Status.create!(title: status[:title], display: status[:display], role: status[:role])
 end
+
+
+departments = %w(Tech Billing Press)
+departments.each do |title|
+  Department.create!(title: title)
+end
