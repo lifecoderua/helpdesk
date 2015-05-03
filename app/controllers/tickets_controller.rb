@@ -16,10 +16,7 @@ class TicketsController < ApplicationController
   # GET /tickets/new
   def new
     @ticket = Ticket.new
-  end
-
-  # GET /tickets/1/edit
-  def edit
+    @departments = Department.all
   end
 
   # POST /tickets
@@ -53,15 +50,6 @@ class TicketsController < ApplicationController
     end
   end
 
-  # DELETE /tickets/1
-  # DELETE /tickets/1.json
-  def destroy
-    @ticket.destroy
-    respond_to do |format|
-      format.html { redirect_to tickets_url, notice: 'Ticket was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

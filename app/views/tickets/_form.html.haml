@@ -6,7 +6,7 @@
     = f.input :body
     = f.input :customer_name
     = f.input :email
-    = f.input :department
+    = f.input :department, collection: @departments, include_blank: false
 
   .form-actions
     = f.button :submit

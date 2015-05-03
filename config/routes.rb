@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   devise_for :staffs
 
   get 'ticket/:slug' => 'tickets#show', as: 'ticket'
-  resources :tickets, except: [:show]
+  resources :tickets, except: [:show, :edit, :destroy]
 
   root 'tickets#new'
 
