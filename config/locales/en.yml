@@ -24,3 +24,6 @@ en:
   email:
     validation:
       format: "The email format is not valid"
+  Logout: "Logout"
+  staff:
+    login: "Login"

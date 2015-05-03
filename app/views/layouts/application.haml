@@ -1,0 +1,27 @@
+!!!
+%html
+  %head
+    %title Helpdesk
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+  %body
+    %p.notice= notice
+    %p.alert= alert
+
+    %nav.navbar.navbar-inverse.navbar-fixed-top
+      .container
+        .navbar-header
+          %a.navbar-brand{:href => "/"} HelpDesk
+        #navbar.navbar-collapse.collapse
+          %ul.nav.navbar-nav
+            - if staff_signed_in?
+              %li
+              %li
+                = link_to t('Logout'), destroy_staff_session_path, method: :delete
+            - else
+              %li
+                = link_to t('staff.login'), new_staff_session_path
+
+
+    = yield
