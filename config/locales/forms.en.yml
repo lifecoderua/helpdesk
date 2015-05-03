@@ -1,0 +1,5 @@
+en:
+  simple_form:
+    labels:
+      ticket:
+        customer_name: Name

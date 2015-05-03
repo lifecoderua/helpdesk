@@ -1,9 +1,10 @@
 class Ticket < ActiveRecord::Base
   belongs_to :department
+  belongs_to :status
   belongs_to :owner, class: 'Staff'
 
   validates :subject, :body, :email, :customer_name, presence: true
-  validates :email, email_format: I18n.t('email.validation.format')
+  validates :email, email_format: {message: I18n.t('email.validation.format')}
 
   after_save :generate_slug
 
@@ -18,6 +19,10 @@ class Ticket < ActiveRecord::Base
   # [-FF]
   SLUG_SECOND_MULTIPLIER = 256
   BASE62_LIMIT = 238327
+
+  def set_status_by_role(role)
+    self.status = Status.find_by_role role
+  end
 
 private
 

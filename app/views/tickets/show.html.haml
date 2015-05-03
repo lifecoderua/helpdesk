@@ -1,6 +1,9 @@
-%p#notice= notice
+%h1= "Ticket #{@ticket.slug}"
+%h2= @ticket.subject
 
+#current-status.status
+  %b Status:
+  = @ticket.status
 
-= link_to 'Edit', edit_ticket_path(@ticket)
-\|
-= link_to 'Back', tickets_path
+#ticket-content= simple_format @ticket.body
+#customer-name= @ticket.customer_name

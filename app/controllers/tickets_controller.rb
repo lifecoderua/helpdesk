@@ -25,6 +25,7 @@ class TicketsController < ApplicationController
   # POST /tickets.json
   def create
     @ticket = Ticket.new(ticket_params)
+    @ticket.set_status_by_role(Status.roles[:waiting_for_staff_response])
 
     respond_to do |format|
       if @ticket.save
@@ -69,6 +70,6 @@ class TicketsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def ticket_params
-      params.require(:ticket).permit(:subject, :body)
+      params.require(:ticket).permit(:subject, :body, :customer_name, :email)
     end
 end
