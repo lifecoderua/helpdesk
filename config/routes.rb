@@ -3,9 +3,13 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   devise_for :staffs
 
-  get 'tickets/:slug' => 'tickets#show', as: 'ticket'
-  patch 'tickets/:slug' => 'tickets#update'
-  resources :tickets, except: [:show, :update, :edit, :destroy]
+  get 'ticket/:slug' => 'tickets#show', as: 'ticket'
+  patch 'ticket/:slug' => 'tickets#update'
+  resources :tickets, except: [:show, :update, :edit, :destroy] do
+    collection do
+      get 'autocomplete'
+    end
+  end
 
   root 'tickets#new'
 

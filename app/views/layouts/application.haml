@@ -14,6 +14,9 @@
           %ul.nav.navbar-nav
             - if staff_signed_in?
               %li
+                %p.navbar-text
+                  Quick Load
+                  %input.ticket-quick-load{'data-source' => autocomplete_tickets_path}
               %li
                 = link_to t('Logout'), destroy_staff_session_path, method: :delete
             - else

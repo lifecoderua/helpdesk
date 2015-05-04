@@ -44,6 +44,7 @@ gem 'cancan'
 
 gem 'radix'
 gem 'validates_email_format_of'
+gem 'jquery-ui-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

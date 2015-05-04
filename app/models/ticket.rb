@@ -11,6 +11,8 @@ class Ticket < ActiveRecord::Base
 
   after_save :generate_slug
 
+  scope :lookup_by_slug, ->(slug) { where('slug LIKE ?', "%#{slug}%") }
+
   # Strict limit which means id's may become not unique.
   # If the system pushed it - slug generation must be revised
   # (with the system in general, which should be obsolete at the point of 15.6*10^9 tickets)
@@ -27,7 +29,7 @@ class Ticket < ActiveRecord::Base
     self.status = Status.find_by_role role
   end
 
-private
+  private
 
   # Generates slug on the ticket creation.
   # This logic is a compromise between the code simplicity, performance and the output aesthetics.

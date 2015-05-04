@@ -74,6 +74,14 @@ class TicketsController < ApplicationController
     end
   end
 
+  def autocomplete
+    tickets = Ticket.lookup_by_slug params[:term]
+    @list = []
+    tickets.each{ |ticket| @list.push({id: ticket_path(ticket), value: ticket.slug}) }
+
+    render json: @list
+  end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
