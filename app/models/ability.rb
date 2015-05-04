@@ -31,8 +31,10 @@ class Ability
 
     if user.nil?
       # customer rules
+      can [:show, :create], Ticket
     else
       # staff rules
+      can :manage, Ticket
     end
   end
 end
