@@ -4,7 +4,9 @@ class TicketsController < ApplicationController
   # GET /tickets
   # GET /tickets.json
   def index
-    @tickets = Ticket.all
+    params[:q] ||= {}
+    @q = Ticket.ransack(params[:q])
+    @tickets = @q.result(distinct: true)
   end
 
   # GET /tickets/1
@@ -93,7 +95,7 @@ class TicketsController < ApplicationController
     def ticket_params
       ticket_update_whitelist = current_staff.nil? ? [:body] : [:body , :status_id, :staff_id]
 
-      params.require(:ticket).permit(:subject, :body, :customer_name, :email, :staff_id,
+      params.require(:ticket).permit(:subject, :body, :customer_name, :email, :staff_id, :q,
          ticket_updates_attributes: ticket_update_whitelist
       )
     end
