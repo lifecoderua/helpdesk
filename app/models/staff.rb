@@ -5,4 +5,9 @@ class Staff < ActiveRecord::Base
   devise :database_authenticatable, :recoverable, :rememberable, :trackable
 
   has_many :tickets
+
+  def to_s
+    email
+  end
+
 end

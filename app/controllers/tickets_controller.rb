@@ -10,7 +10,10 @@ class TicketsController < ApplicationController
   # GET /tickets/1
   # GET /tickets/1.json
   def show
-    @statuses = Status.all
+    unless current_staff.nil?
+      @statuses = Status.all
+      @staff_users = Staff.all
+    end
   end
 
   # GET /tickets/new
@@ -42,17 +45,23 @@ class TicketsController < ApplicationController
     respond_to do |format|
       passed_params = ticket_params
 
-      if current_staff.nil?
-        case params[:commit]
-          when 'Update and Close'
-            status = Status.find_by_role(Status.roles[:completed])
-            @ticket.status = status
-            passed_params[:ticket_updates_attributes]['0'][:status_id] = status.id
-          else
+
+      case params[:commit]
+        when 'Update and Close'
+          status = Status.find_by_role(Status.roles[:completed])
+          @ticket.status = status
+          passed_params[:ticket_updates_attributes]['0'][:status_id] = status.id
+        else
+          if current_staff.nil?
             @ticket.set_status_by_role(Status.roles[:waiting_for_staff_response])
-        end
-      else
-        # ToDo: staff-related logic
+          else
+            @ticket.set_status_by_role(Status.roles[:waiting_for_customer])
+          end
+      end
+
+      unless current_staff.nil?
+        # set the user performing update
+        passed_params[:ticket_updates_attributes]['0'][:editor_id] = current_staff.id
       end
 
       if @ticket.update(passed_params)
@@ -74,10 +83,10 @@ class TicketsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def ticket_params
-      params.require(:ticket).permit(:subject, :body, :customer_name, :email,
-         ticket_updates_attributes: [
-             :body #, :status_id, :owner
-         ]
+      ticket_update_whitelist = current_staff.nil? ? [:body] : [:body , :status_id, :staff_id]
+
+      params.require(:ticket).permit(:subject, :body, :customer_name, :email, :staff_id,
+         ticket_updates_attributes: ticket_update_whitelist
       )
     end
 end

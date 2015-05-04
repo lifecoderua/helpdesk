@@ -16,14 +16,14 @@
       .list-item
         .update-info
           .when= I18n.l update.created_at, format: :long
-          .who by Customer
-        .body= simple_format update.body
-        .update-meta
-          .status= "Status changed to: #{update.status}" if update.status.present?
-          .owner ToDo: Customer
-
-
-
+          .who
+            by
+            = update.editor.nil? ? 'Customer' : update.editor
+        .update
+          .body= simple_format update.body
+          .update-meta
+            .status= "Status changed to: #{update.status}" if update.status.present?
+            .owner= "Owner changed to: #{update.owner}" if update.owner.present?
 
 %h4 Reply
 
@@ -34,7 +34,9 @@
   = f.simple_fields_for :ticket_updates, @ticket.ticket_updates.build do |u|
     .form-inputs
       = u.input :body, label: false
-      -#= u.input :status_id, label: false, collection: @statuses
+      - if staff_signed_in?
+        = u.input :staff_id, collection: @staff_users
+        = u.input :status_id, collection: @statuses
 
 
   .form-actions

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150502122448) do
+ActiveRecord::Schema.define(version: 20150504081022) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 255
@@ -85,8 +85,10 @@ ActiveRecord::Schema.define(version: 20150502122448) do
     t.integer  "status_id",  limit: 4
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
+    t.integer  "editor_id",  limit: 4
   end
 
+  add_index "ticket_updates", ["editor_id"], name: "fk_rails_26a799015e", using: :btree
   add_index "ticket_updates", ["ticket_id"], name: "index_ticket_updates_on_ticket_id", using: :btree
 
   create_table "tickets", force: :cascade do |t|
@@ -105,4 +107,5 @@ ActiveRecord::Schema.define(version: 20150502122448) do
   add_index "tickets", ["staff_id"], name: "index_tickets_on_staff_id", using: :btree
   add_index "tickets", ["status_id"], name: "index_tickets_on_status_id", using: :btree
 
+  add_foreign_key "ticket_updates", "staffs", column: "editor_id"
 end
