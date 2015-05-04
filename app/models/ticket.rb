@@ -1,7 +1,7 @@
 class Ticket < ActiveRecord::Base
   belongs_to :department
   belongs_to :status
-  belongs_to :owner, class: 'Staff'
+  belongs_to :owner, class_name: 'Staff', foreign_key: :staff_id
 
   has_many :ticket_updates
   accepts_nested_attributes_for :ticket_updates
@@ -12,6 +12,7 @@ class Ticket < ActiveRecord::Base
   after_save :generate_slug
 
   scope :lookup_by_slug, ->(slug) { where('slug LIKE ?', "%#{slug}%") }
+  scope :lookup_by_text, ->(text) { where('subject LIKE ? OR body LIKE ?', "%#{text}%", "%#{text}%") }
 
   # Strict limit which means id's may become not unique.
   # If the system pushed it - slug generation must be revised

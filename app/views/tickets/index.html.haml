@@ -1,19 +1,27 @@
+%h3 Tickets Search
+= search_form_for @q do |f|
+  = f.search_field :subject_or_body_cont
+
+  = f.submit
+
+
 %h1 Listing tickets
 
 %table
   %thead
     %tr
       %th
-      %th
-      %th
+      %th Body
+      %th Status
+      %th Owner
+      %th Updated
 
   %tbody
     - @tickets.each do |ticket|
       %tr
-        %td= link_to 'Show', ticket
-        %td= link_to 'Edit', edit_ticket_path(ticket)
-        %td= link_to 'Destroy', ticket, :method => :delete, :data => { :confirm => 'Are you sure?' }
+        %td= link_to ticket.subject, ticket
+        %td= highlight(excerpt(ticket.body, params[:q][:subject_or_body_cont], radius: 50), params[:q][:subject_or_body_cont])
+        %td= ticket.status
+        %td= ticket.owner
+        %td= I18n.l ticket.updated_at, format: :long
 
-%br
-
-= link_to 'New Ticket', new_ticket_path

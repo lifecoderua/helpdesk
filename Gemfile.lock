@@ -306,6 +306,7 @@ DEPENDENCIES
   mysql2
   radix
   rails (= 4.2.1)
+  ransack
   rspec-rails (~> 3.0)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
