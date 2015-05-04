@@ -32,6 +32,8 @@ class TicketsController < ApplicationController
 
     respond_to do |format|
       if @ticket.save
+        TicketMailer.ticket_created(@ticket).deliver_now
+
         format.html { redirect_to @ticket, notice: 'Ticket was successfully created.' }
         format.json { render :show, status: :created, location: @ticket }
       else
@@ -46,7 +48,7 @@ class TicketsController < ApplicationController
   def update
     respond_to do |format|
       passed_params = ticket_params
-
+      notify_user = false
 
       case params[:commit]
         when 'Update and Close'
@@ -64,9 +66,14 @@ class TicketsController < ApplicationController
       unless current_staff.nil?
         # set the user performing update
         passed_params[:ticket_updates_attributes]['0'][:editor_id] = current_staff.id
+        # notify Customer on reply
+        update_body = passed_params[:ticket_updates_attributes]['0'][:body]
+        notify_user = true if update_body.present?
       end
 
       if @ticket.update(passed_params)
+        TicketMailer.ticket_updated(@ticket, update_body).deliver_now if notify_user
+
         format.html { redirect_to @ticket, notice: 'Ticket was successfully updated.' }
         format.json { render :show, status: :ok, location: @ticket }
       else
@@ -95,7 +102,7 @@ class TicketsController < ApplicationController
     def ticket_params
       ticket_update_whitelist = current_staff.nil? ? [:body] : [:body , :status_id, :staff_id]
 
-      params.require(:ticket).permit(:subject, :body, :customer_name, :email, :staff_id, :q,
+      params.require(:ticket).permit(:subject, :body, :customer_name, :email, :department, :staff_id, :q,
          ticket_updates_attributes: ticket_update_whitelist
       )
     end

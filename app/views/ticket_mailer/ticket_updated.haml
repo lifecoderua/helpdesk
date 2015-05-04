@@ -1,0 +1,16 @@
+%p= "Hi, #{@ticket.customer_name}!"
+
+%p Your ticket received a reply:
+
+%p
+  %i= @update_body
+
+%p
+  You may track your ticket in realtime by this link:
+  = link_to @ticket.subject, ticket_url(@ticket)
+
+
+%p
+  Kind regards,
+  %br
+  Helpdesk Team.

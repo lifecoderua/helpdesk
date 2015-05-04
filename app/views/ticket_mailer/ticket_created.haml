@@ -1,0 +1,14 @@
+%p= "Hi, #{@ticket.customer_name}!"
+
+%p Your ticket was successfully registered in the system.
+%p We would contact you soon.
+
+%p
+  You may track your ticket in realtime by this link:
+  = link_to @ticket.subject, ticket_url(@ticket)
+
+
+%p
+  Kind regards,
+  %br
+  Helpdesk Team.
