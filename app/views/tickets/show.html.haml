@@ -1,5 +1,8 @@
 %h1= "Ticket #{@ticket.slug}"
 %h2= @ticket.subject
+.department
+  = @ticket.department
+  Department
 
 #current-status.status
   %b Status:

@@ -89,6 +89,7 @@ class TicketsController < ApplicationController
           # if the body passed we want to set the new status, or the :waiting_for_customer if the status change not passed
           @ticket.status_id = update_params[:status_id].present? ? update_params[:status_id]
             : Status.find_by_role(Status.roles[:waiting_for_customer]).id
+          passed_params[:ticket_updates_attributes]['0'][:status_id] = @ticket.status_id
         else
           @ticket.status_id = update_params[:status_id] if update_params[:status_id].present?
         end
@@ -127,7 +128,7 @@ class TicketsController < ApplicationController
     def ticket_params
       ticket_update_whitelist = current_staff.nil? ? [:body] : [:body , :status_id, :staff_id]
 
-      params.require(:ticket).permit(:subject, :body, :customer_name, :email, :department, :staff_id,
+      params.require(:ticket).permit(:subject, :body, :customer_name, :email, :department_id, :staff_id,
          ticket_updates_attributes: ticket_update_whitelist
       )
     end
