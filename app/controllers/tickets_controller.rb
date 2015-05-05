@@ -10,6 +10,18 @@ class TicketsController < ApplicationController
     @tickets = @q.result(distinct: true)
   end
 
+  # displays
+  def display
+    if params[:display].to_i == Status.displays[:fresh]
+      @tickets = Ticket.where(owner: nil)
+    else
+      status_list = Status.where(display: params[:display])
+      @tickets = Ticket.where(status: status_list)
+    end
+
+    render :index
+  end
+
   # GET /tickets/1
   # GET /tickets/1.json
   def show
@@ -79,6 +91,8 @@ class TicketsController < ApplicationController
         else
           @ticket.status_id = update_params[:status_id] if update_params[:status_id].present?
         end
+
+        @ticket.staff_id = update_params[:staff_id] if update_params[:staff_id].present?
       end
 
       if @ticket.update(passed_params)
@@ -112,7 +126,7 @@ class TicketsController < ApplicationController
     def ticket_params
       ticket_update_whitelist = current_staff.nil? ? [:body] : [:body , :status_id, :staff_id]
 
-      params.require(:ticket).permit(:subject, :body, :customer_name, :email, :department, :staff_id, :q,
+      params.require(:ticket).permit(:subject, :body, :customer_name, :email, :department, :staff_id,
          ticket_updates_attributes: ticket_update_whitelist
       )
     end
