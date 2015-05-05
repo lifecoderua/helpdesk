@@ -5,8 +5,8 @@ class TicketsController < ApplicationController
   # GET /tickets
   # GET /tickets.json
   def index
-    params[:q] ||= {}
-    @q = Ticket.ransack(params[:q])
+    # params[:q] ||= {}
+    # @q = Ticket.ransack(params[:q])
     @tickets = @q.result(distinct: true)
   end
 

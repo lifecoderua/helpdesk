@@ -18,6 +18,12 @@
                   Quick Load
                   %input.ticket-quick-load{'data-source' => autocomplete_tickets_path}
               %li
+                %p.navbar-text Tickets Search
+              %li
+                %p
+                  = search_form_for @q, url: tickets_path do |f|
+                    = f.search_field :subject_or_body_cont
+              %li
                 = link_to t('Logout'), destroy_staff_session_path, method: :delete
             - else
               %li

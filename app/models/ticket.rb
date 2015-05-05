@@ -12,7 +12,6 @@ class Ticket < ActiveRecord::Base
   after_save :generate_slug
 
   scope :lookup_by_slug, ->(slug) { where('slug LIKE ?', "%#{slug}%") }
-  scope :lookup_by_text, ->(text) { where('subject LIKE ? OR body LIKE ?', "%#{text}%", "%#{text}%") }
 
   # Strict limit which means id's may become not unique.
   # If the system pushed it - slug generation must be revised
