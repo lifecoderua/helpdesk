@@ -2,12 +2,12 @@
 
 This is a sample HelpDesk solution, supporting fast ticket creation, basic management, and lookup options.
 
-## Technical requirements
+## Project Requirements
 
 This application should meet the next requirements list:
 - Rails 4
 - HAML
-- Recive tickets and allow reply through UI
+- Receive tickets and allow reply through UI
 - Customer does not need to login to submit a ticket
 - Ticket form includes:
  - name
@@ -16,7 +16,7 @@ This application should meet the next requirements list:
  - body
  - Department
 - On ticket creation
- - ticket receives unique random string slug with mask **AAA-HH-AAA-HH-AAA** (**A** stands for random character, 
+ - ticket receives unique random string slug with a mask **AAA-HH-AAA-HH-AAA** (**A** stands for random character, 
  **H** stands for Hex digit)
  - ticket receives Status `Waiting for Staff Respons`
  - customer receives an email with the link to his ticket
@@ -41,6 +41,6 @@ to one of the views
 - Truly random string may not guarantee it would be unique, so we would use semi-random string based on the id 
 for the Ticket's slug
 
-## Requirements
+## Technical Requirements
 
 - Make sure the DB uses **case sensitive collation** in order to support ticket slug lookup (`base62` is case sensitive)

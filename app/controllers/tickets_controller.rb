@@ -50,26 +50,35 @@ class TicketsController < ApplicationController
     respond_to do |format|
       passed_params = ticket_params
       notify_user = false
+      update_params = passed_params[:ticket_updates_attributes]['0']
 
       case params[:commit]
         when 'Update and Close'
-          status = Status.find_by_role(Status.roles[:completed])
+          # Assume Staff `cancel` ticket on close, and Customer `completes` by default;
+          # Staff is still able to `complete` ticket with the implicit Status selection on update
+          status = current_staff.nil? ? Status.find_by_role(Status.roles[:completed])
+            :  Status.find_by_role(Status.roles[:cancelled])
           @ticket.status = status
           passed_params[:ticket_updates_attributes]['0'][:status_id] = status.id
         else
           if current_staff.nil?
             @ticket.set_status_by_role(Status.roles[:waiting_for_staff_response])
-          else
-            @ticket.set_status_by_role(Status.roles[:waiting_for_customer])
           end
       end
 
       unless current_staff.nil?
         # set the user performing update
         passed_params[:ticket_updates_attributes]['0'][:editor_id] = current_staff.id
-        # notify Customer on reply
-        update_body = passed_params[:ticket_updates_attributes]['0'][:body]
-        notify_user = true if update_body.present?
+        # notify Customer on reply and update status
+        update_body = update_params[:body]
+        if update_body.present?
+          notify_user = true
+          # if the body passed we want to set the new status, or the :waiting_for_customer if the status change not passed
+          @ticket.status_id = update_params[:status_id].present? ? update_params[:status_id]
+            : Status.find_by_role(Status.roles[:waiting_for_customer]).id
+        else
+          @ticket.status_id = update_params[:status_id] if update_params[:status_id].present?
+        end
       end
 
       if @ticket.update(passed_params)
