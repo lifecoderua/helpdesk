@@ -7,7 +7,7 @@ class TicketsController < ApplicationController
   def index
     # params[:q] ||= {}
     # @q = Ticket.ransack(params[:q])
-    @tickets = @q.result(distinct: true)
+    @tickets = @q.result(distinct: true).own_first(current_staff)
   end
 
   # displays
@@ -19,6 +19,7 @@ class TicketsController < ApplicationController
       @tickets = Ticket.where(status: status_list)
     end
 
+    @tickets = @tickets.own_first(current_staff)
     render :index
   end
 

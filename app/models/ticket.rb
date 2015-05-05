@@ -11,6 +11,8 @@ class Ticket < ActiveRecord::Base
 
   after_save :generate_slug
 
+  # order doesn't want to support params, should be checked, issue filled
+  scope :own_first, ->(staff) { order("CASE WHEN staff_id = #{staff.id} THEN 1 ELSE 2 END ASC") }
   scope :lookup_by_slug, ->(slug) { where('slug LIKE ?', "%#{slug}%") }
 
   # Strict limit which means id's may become not unique.

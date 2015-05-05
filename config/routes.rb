@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :tickets, except: [:show, :update, :edit, :destroy] do
     collection do
       get 'autocomplete'
+      get 'display/:display', action: :display, as: :display
     end
   end
 

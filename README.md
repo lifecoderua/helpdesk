@@ -40,6 +40,8 @@ to one of the views
 - Ticket may be reopened from closed Status both by Staff or Customer
 - Truly random string may not guarantee it would be unique, so we would use semi-random string based on the id 
 for the Ticket's slug
+- New display assumed to contain all tickets without owner. As another option the may be taken by a special `fresh` 
+status or a request for tickets with `0` TicketUpdates
 
 ## Technical Requirements
 

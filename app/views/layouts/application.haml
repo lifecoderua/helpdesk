@@ -6,7 +6,7 @@
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
   %body
-    %nav.navbar.navbar-inverse.navbar-fixed-top
+    %nav.navbar.navbar-inverse
       .container
         .navbar-header
           %a.navbar-brand{:href => "/"} HelpDesk
@@ -28,6 +28,11 @@
             - else
               %li
                 = link_to t('staff.login'), new_staff_session_path
+
+    - if staff_signed_in?
+      %nav.navbar.navbar-inverse
+        .container
+          = render_navigation
 
     .container
       .row
