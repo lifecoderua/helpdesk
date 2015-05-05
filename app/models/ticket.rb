@@ -44,6 +44,9 @@ class Ticket < ActiveRecord::Base
   # the collision probability around 1*10^10
   def generate_slug
     if self.id_changed? && !self.slug_changed?
+      # this should not happen on regular DB setup, just a bit of insurance
+      throw 'ID exceeded the storage limit' if self.id > TICKET_ID_LIMIT
+
       shifted_id = (Rails.application.secrets.ticket[:shift] + self.id) % TICKET_ID_LIMIT
 
       chunk1 = shifted_id / SLUG_FIRST_MULTIPLIER
