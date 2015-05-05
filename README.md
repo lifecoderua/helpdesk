@@ -46,3 +46,13 @@ status or a request for tickets with `0` TicketUpdates
 ## Technical Requirements
 
 - Make sure the DB uses **case sensitive collation** in order to support ticket slug lookup (`base62` is case sensitive)
+
+## Current State
+
+The main objectives done, however there are some issues listed on GitHub and would be fixed.
+
+First priority tasks are
+ 
+- [] Automatic tests for Ticket Updates is a must (part of the #12)
+- [] Review the Ticket Update form handling, it doesn't feel good
+- [] Add automatic tests for other features #12 
